@@ -12,9 +12,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 Scrabbel game with the following features:
 
+-Date: 24/08/2023
+
+-New functions:
+
+    +Add the new class: Add a new class (player) with its respective test
+
+-Changes and fixes: 
+
+    +changes in the name of a code SC.py
+
+    +fixes in the import in the tests
+
 -Date: 23/08/2023
 
 -New functions:
+
     +Add the board and token system to find out how much each one is worth
 
 -Changes and fixes: ----

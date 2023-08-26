@@ -1,7 +1,7 @@
 
 import unittest
 
-from GameSC.SC import Tile, BagTiles, Player
+from GameSC.SC import *
 
 from unittest.mock import patch
 
@@ -101,6 +101,29 @@ class TestPlayer(unittest.TestCase):
             0,
 
         )
+class TestBoard(unittest.TestCase):
+
+    def test_init(self):
+
+        board = Board()
+
+        self.assertEqual(
+
+            len(board.grid),
+
+            15,
+
+        )
+
+        self.assertEqual(
+
+            len(board.grid[0]),
+
+            15,
+
+        )
+
+
 
 
 if __name__ == '__main__':
