@@ -123,7 +123,29 @@ class TestBoard(unittest.TestCase):
 
         )
 
+        self.assertEqual(
 
+            board.grid[0][0],
+
+            None,
+
+        )
+    
+    def test_put_tile(self):
+
+        board = Board()
+
+        tile = Tile('A', 1)
+
+        board.put_tile(tile, 0, 0)
+
+        self.assertEqual(
+
+            board.grid[0][0],
+
+            tile,
+
+        )
 
 
 if __name__ == '__main__':

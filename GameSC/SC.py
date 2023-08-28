@@ -1,6 +1,5 @@
+import random 
 
-
-import random
 
 
 class Tile:
@@ -123,6 +122,11 @@ class Cell:
             return self.letter.value
 
 # Conjunto de fichas con letras y valores de puntos
+
+class Ficha:
+    def __init__(self, letra, valor):
+        self.letra = letra
+        self.valor = valor
 
 fichas = {
     "A": 1, "E": 1, "I": 1, "L": 1, "N": 1, "O": 1, "R": 1, "S": 1, "T": 1, "U": 1,
