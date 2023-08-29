@@ -11,42 +11,38 @@ class Tile:
         self.value = value
 
 class BagTiles:
-
-    def __init__(self):
-
-        self.tiles = [
-
-            Tile('A', 1),
-
-            Tile('A', 1),
-
-            Tile('A', 1),
-
-            Tile('A', 1),
-
-            Tile('A', 1),
-
-        ]
-
+    def __init__(self, fichas):
+        self.tiles = list(fichas)
         random.shuffle(self.tiles)
 
     def take(self, count):
-
-        tiles = []
-
-        for _ in range(count):
-
-            tiles.append(self.tiles.pop())
-
-        return tiles
-
+        if count > len(self.tiles):
+            return None                     # No hay suficientes fichas en la bolsa
+        taken_tiles = random.sample(self.tiles, count)
+        for tile in taken_tiles:
+            self.tiles.remove(tile)
+        return taken_tiles
 
     def put(self, tiles):
-
         self.tiles.extend(tiles)
+        random.shuffle(self.tiles)
 
+# Definición de las fichas disponibles
+fichas_disponibles = [
+    Tile('A', 1),
+    Tile('A', 1),
+    Tile('A', 1),
+    Tile('A', 1),
+    Tile('A', 1),
+    #(otras fichas con sus letras y valores)
+]
+
+# Crear una instancia de BagTiles con las fichas disponibles
+bag = BagTiles(fichas_disponibles)
+
+# Definir la función de selección de fichas
 def seleccionar_fichas(num_fichas):
-    return random.sample(fichas, num_fichas)
+    return bag.take(num_fichas)
 
 # Función para calcular la puntuación de una palabra
 def calcular_puntuacion(palabra, casillas_usadas):

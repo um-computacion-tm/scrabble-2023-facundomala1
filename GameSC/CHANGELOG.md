@@ -12,6 +12,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 Scrabbel game with the following features:
 
+-Date: 28/08/2023
+
+-New functions:---
+
+-Changes and fixes: 
+
+    +Change the code of the "Bag tiles" to facilitate the counting of chips (some bugs need to be fixed)
+
+
 -Date: 27/08/2023
 
 -New functions:
