@@ -1,5 +1,15 @@
 import random 
 
+class ScrabbleGame:
+
+    def __init__(self, players_count):
+
+        self.players = []
+        self.bag_tiles = BagTiles(fichas_disponibles)
+        self.board = Board()
+        for _ in range(players_count):
+            self.players.append(Player())
+
 
 
 class Tile:
@@ -136,9 +146,10 @@ fichas = {
 
 class Player:
     
-        def __init__(self):
+        def __init__(self,bag_tiles):
     
-            self.tiles = []
+            self.tiles = bag_tiles.take(7)
+            self.bag_tiles = bag_tiles
     
         def add_tiles(self, tiles):
     
