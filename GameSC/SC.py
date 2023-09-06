@@ -146,46 +146,28 @@ fichas = {
 
 class Player:
     
-        def __init__(self,bag_tiles):
-    
-            self.tiles = bag_tiles.take(7)
+        def __init__(self,name="",number=0,score=0,bag_tiles=0):
+            self.name = name
+            self.score = score
             self.bag_tiles = bag_tiles
-    
-        def add_tiles(self, tiles):
-    
-            self.tiles.extend(tiles)
-    
-        def remove_tiles(self, tiles):
-    
-            for tile in tiles:
-    
-                self.tiles.remove(tile)
-    
-        def get_tiles(self):
-    
-            return self.tiles
-    
-        def get_tiles_letters(self):
-    
-            return [tile.letter for tile in self.tiles]
-    
-        def get_tiles_values(self):
-    
-            return [tile.value for tile in self.tiles]
-    
-        def get_tiles_values_sum(self):
-    
-            return sum([tile.value for tile in self.tiles])
-    
-        def get_tiles_count(self):
-    
-            return len(self.tiles)
-    
-        def get_tiles_count_letters(self):
-    
-            return len(set(self.get_tiles_letters()))
-    
-        def get_tiles_count_values(self):
-    
-            return len(set(self.get_tiles_values()))
+            self.number = number
+            self.tiles = []
+
         
+        def add_tiles(self,tiles):
+            self.tiles.extend(tiles)
+
+        def remove_tiles(self,tiles):
+            for tile in tiles:
+                self.tiles.remove(tile)
+        
+        def change_tiles(self,player_old=[],player_new=[]):
+            tiles_to_change = []
+            for tile in player_old:
+                self.tiles.remove(tile)
+                tiles_to_change.append(tile)
+            for tile in player_new:
+                self.tiles.append(tile)
+                tiles_to_change.remove(tile)
+            return tiles_to_change
+    
