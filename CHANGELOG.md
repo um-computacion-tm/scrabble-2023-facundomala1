@@ -12,15 +12,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 Scrabbel game with the following features:
 
+-Date: 08/09/2023
+
+-New functions:
+
+    +Add the "DATA" function which shows you the values of each letter in a better way.
+
+-Changes and fixes:
+
+    +Changes in the "Scrabble Game" class in the "start game" part.
+
 -Date: 06/09/2023
 
 -New functions:
 
 -Changes and fixes:
-    +Add changes to the "player" class to summarize and make the code easier to use
-
-        
-
+    +Add changes to the "player" class to summarize and make the code easier to use.
 
 -Date: 29/08/2023
 

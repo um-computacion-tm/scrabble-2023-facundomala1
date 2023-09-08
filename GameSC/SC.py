@@ -10,6 +10,18 @@ class ScrabbleGame:
         for _ in range(players_count):
             self.players.append(Player())
 
+    def start_game(self):
+            
+            for player in self.players:
+                player.add_tiles(self.bag_tiles.take(7))
+
+    
+
+    def end_game(self):
+
+
+        pass
+
 
 
 class Tile:
@@ -19,6 +31,38 @@ class Tile:
         self.letter = letter
 
         self.value = value
+    
+    DATA= [
+    {"letter": "A", "value": 1, "quantity": 12},
+    {"letter": "B", "value": 3, "quantity": 2},
+    {"letter": "C", "value": 3, "quantity": 4},
+    {"letter": "D", "value": 2, "quantity": 5},
+    {"letter": "E", "value": 1, "quantity": 12},
+    {"letter": "F", "value": 4, "quantity": 1},
+    {"letter": "G", "value": 2, "quantity": 2},
+    {"letter": "H", "value": 4, "quantity": 2},
+    {"letter": "I", "value": 1, "quantity": 6},
+    {"letter": "J", "value": 8, "quantity": 1},
+    {"letter": "L", "value": 1, "quantity": 4},
+    {"letter": "M", "value": 3, "quantity": 2},
+    {"letter": "N", "value": 1, "quantity": 5},
+    {"letter": "Ñ", "value": 8, "quantity": 1},
+    {"letter": "O", "value": 1, "quantity": 9},
+    {"letter": "P", "value": 3, "quantity": 2},
+    {"letter": "Q", "value": 5, "quantity": 1},
+    {"letter": "R", "value": 1, "quantity": 5},
+    {"letter": "S", "value": 1, "quantity": 6},
+    {"letter": "T", "value": 1, "quantity": 4},
+    {"letter": "U", "value": 1, "quantity": 5},
+    {"letter": "V", "value": 4, "quantity": 1},
+    {"letter": "X", "value": 8, "quantity": 1},
+    {"letter": "Y", "value": 4, "quantity": 1},
+    {"letter": "Z", "value": 10, "quantity": 1},
+    {"letter": "CH", "value": 5, "quantity": 1},
+    {"letter": "LL", "value": 8, "quantity": 1},
+    {"letter": "RR", "value": 8, "quantity": 1},
+    {"letter": "_", "value": 0, "quantity": 2} ]
+
 
 class BagTiles:
     def __init__(self, fichas):
@@ -61,17 +105,17 @@ def calcular_puntuacion(palabra, casillas_usadas):
 
     for i, letra in enumerate(palabra):
         if casillas_usadas[i] == "DL":
-            puntuacion += fichas[letra][1] * 2
+            puntuacion += Tile[letra][1] * 2
         elif casillas_usadas[i] == "TL":
-            puntuacion += fichas[letra][1] * 3
+            puntuacion += Tile[letra][1] * 3
         elif casillas_usadas[i] == "DW":
             multiplicador *= 2
-            puntuacion += fichas[letra][1]
+            puntuacion += Tile[letra][1]
         elif casillas_usadas[i] == "TW":
             multiplicador *= 3
-            puntuacion += fichas[letra][1]
+            puntuacion += Tile[letra][1]
         else:
-            puntuacion += fichas[letra][1]
+            puntuacion += Tile[letra][1]
 
     return puntuacion * multiplicador
 
@@ -127,22 +171,6 @@ class Cell:
 
             return self.letter.value
 
-# Conjunto de fichas con letras y valores de puntos
-
-class Ficha:
-    def __init__(self, letra, valor):
-        self.letra = letra
-        self.valor = valor
-
-fichas = {
-    "A": 1, "E": 1, "I": 1, "L": 1, "N": 1, "O": 1, "R": 1, "S": 1, "T": 1, "U": 1,
-    "D": 2, "G": 2,
-    "B": 3, "C": 3, "M": 3, "P": 3,
-    "F": 4, "H": 4, "V": 4, "Y": 4,
-    "Ch": 5, "Q": 5,
-    "J": 8, "LL": 8, "Ñ": 8, "RR": 8, "X": 8,
-    "Z": 10
-}
 
 class Player:
     
