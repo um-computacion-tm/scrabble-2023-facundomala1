@@ -12,6 +12,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 Scrabbel game with the following features:
 
+-Date: 09/09/2023
+
+-New functions:
+
+    +Add other new files (README.py,__init__.py,requirements.txt)
+
+    +Two new tests in TestCell (test_cell_multiplier_both,test_cell_multiplier_word)
+
+-Changes and fixes:---
+
+    
+
 -Date: 08/09/2023
 
 -New functions:

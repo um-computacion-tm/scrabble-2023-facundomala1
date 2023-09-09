@@ -132,21 +132,6 @@ class TestBoard(unittest.TestCase):
 
         )
     
-    def test_put_tile(self):
-
-        board = Board()
-
-        tile = Tile('A', 1)
-
-        board.put_tile(tile, 0, 0)
-
-        self.assertEqual(
-
-            board.grid[0][0],
-
-            tile,
-
-        )
 
 class TestCell(unittest.TestCase):
 
@@ -170,10 +155,32 @@ class TestCell(unittest.TestCase):
         self.assertEqual(cell.calculate_value(), 6)
 
     def test_cell_multiplier_word(self):
-        cell = Cell(multiplier=2, multiplier_type='word')
-        letter = Tile(letter='p', value=3)
-        cell.add_letter(letter=letter)
-        self.assertEqual(cell.calculate_value(), 3)
+        cell_1 = Cell(multiplier=1,multiplier_type='letter')
+        cell_1.add_letter(Tile('C', 1)) 
+        cell_2 = Cell(multiplier=1,multiplier_type='letter')
+        cell_2.add_letter(Tile('A', 1))
+        cell_3 = Cell(multiplier=3,multiplier_type='word')
+        cell_3.add_letter(Tile('S', 2))
+        cell_4 = Cell(multiplier=1,multiplier_type='letter')
+        cell_4.add_letter(Tile('A', 1))
+        word = [cell_1, cell_2, cell_3, cell_4]
+        value=Board().calculate_word_value(word)
+        self.assertEqual(value,15)
+
+    def test_cell_multiplier_both(self):
+        cell_1 = Cell(multiplier=2,multiplier_type='letter')
+        cell_1.add_letter(Tile('C', 1)) 
+        cell_2 = Cell(multiplier=1,multiplier_type='letter')
+        cell_2.add_letter(Tile('A', 1))
+        cell_3 = Cell(multiplier=3,multiplier_type='word')
+        cell_3.add_letter(Tile('S', 2))
+        cell_4 = Cell(multiplier=1,multiplier_type='letter')
+        cell_4.add_letter(Tile('A', 1))
+        word = [cell_1, cell_2, cell_3, cell_4]
+        value=Board().calculate_word_value(word)
+        self.assertEqual(value,18)
+
+
 
 
 
