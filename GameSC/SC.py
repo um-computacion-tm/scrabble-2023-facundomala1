@@ -121,6 +121,24 @@ def calcular_puntuacion(palabra, casillas_usadas):
 
 #tablero
 class Board:
+    def __init__(self,grid=None):
+        self.grid = [[ Cell(1, '') for _ in range(15) ]for _ in range(15)]
+        self.grid[7][7].multiplier_type = 'word'
+        self.grid[7][7].multiplier = 3
+        self.grid[0][0].multiplier_type = 'word'
+        self.grid[0][0].multiplier = 3
+        self.grid[0][7].multiplier_type = 'word'
+
+    def calculate_word_value(self, word):
+        value = 0
+        for cell in word:
+            value += cell.calculate_value()
+        for cell in word:
+            if cell.multiplier_type == 'word':
+                value *= cell.multiplier
+                cell.multiplier = 1
+        return value
+
     tablero = [
         ["TW", "", "", "DL", "", "", "", "TW", "", "", "", "DL", "", "", "TW"],
         ["", "DW", "", "", "", "TL", "", "", "", "TL", "", "", "", "DW", ""],

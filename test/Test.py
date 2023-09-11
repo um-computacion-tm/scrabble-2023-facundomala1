@@ -91,46 +91,45 @@ class TestBagTiles(unittest.TestCase):
 class TestPlayer(unittest.TestCase):
 
     def test_init(self):
+        player=Player('Gabriel',0,0,BagTiles())
+        self.assertEqual(player.name,'Gabriel')
+        self.assertEqual(player.score,0)
+        self.assertEqual(player.number,0)
+        self.assertEqual(len(player.tiles),0)
 
-        player_1 = Player()
+    def test_add_tiles(self):
+        player=Player('Gabriel',0,0,BagTiles())
+        tiles=[Tile('A',1),Tile('B',1),Tile('C',1)]
+        player.add_tiles(tiles)
+        self.assertEqual(len(player.tiles),3)
+        self.assertEqual(player.tiles[0].letter,'A')
+        self.assertEqual(player.tiles[1].letter,'B')
+        self.assertEqual(player.tiles[2].letter,'C')
 
-        self.assertEqual(
-
-            len(player_1.tiles),
-
-            0,
-
-        )
+    def test_change_tiles(self):
+        player=Player('Gabriel',0,0,BagTiles())
+        tiles=[Tile('A',1),Tile('B',1),Tile('C',1)]
+        player.add_tiles(tiles)
+        print(player.tiles)
+        player.change_tiles([1,2],[Tile('D',1),Tile('E',1)])
+        self.assertEqual(len(player.tiles),3)
+        self.assertEqual(player.tiles[0].letter,'D')
+        self.assertEqual(player.tiles[1].letter,'E')
+        self.assertEqual(player.tiles[2].letter,'C')
 
 class TestBoard(unittest.TestCase):
 
     def test_init(self):
+        board = Board()            
+        
+        self.assertEqual(len(board.grid),15,)
+        
+        self.assertEqual(len(board.grid[0]),15,)  
 
-        board = Board()
+        self.assertEqual(board.grid[0][0].multiplier,3)
+        self.assertEqual(board.grid[0][0].multiplier_type,'word')
+        self.assertEqual(board.grid[0][0].letter,None)      
 
-        self.assertEqual(
-
-            len(board.grid),
-
-            15,
-
-        )
-
-        self.assertEqual(
-
-            len(board.grid[0]),
-
-            15,
-
-        )
-
-        self.assertEqual(
-
-            board.grid[0][0],
-
-            None,
-
-        )
     
 
 class TestCell(unittest.TestCase):

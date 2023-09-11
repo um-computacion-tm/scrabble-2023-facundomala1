@@ -12,6 +12,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 Scrabbel game with the following features:
 
+-Date: 10/09/2023
+
+-New functions:
+
+    +Add test in "Test Player" to know how many chips the player has
+
+    +New functions for the "Board" class to finish defining the board
+
+-Changes and fixes:
+
+    +Fixes in the "test_init" of the "TestPlayer" class
+
 -Date: 09/09/2023
 
 -New functions:
