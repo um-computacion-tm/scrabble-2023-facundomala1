@@ -1,5 +1,13 @@
 import random 
 
+TOTALTILES = 100
+
+class MuchTilesPut(Exception):
+    pass
+
+class MuchTiles(Exception):
+    pass
+
 class ScrabbleGame:
 
     def __init__(self, players_count):
@@ -14,14 +22,51 @@ class ScrabbleGame:
             
             for player in self.players:
                 player.add_tiles(self.bag_tiles.take(7))
+            self.current_player = self.players[0]   
+    
+    def draw_tiles(self,cantidad):
+        tile_drawn=[]
+        try:
+            if cantidad>len(self.tiles):
+                raise MuchTiles
+            else:
+                for i in range(cantidad):
+                    tile_drawn.append(self.tiles.pop())
+                return tile_drawn
+        except MuchTiles:
+            return tile_drawn
+
+    def next_turn(self):
+        if self.current_player == None:
+            self.current_player = self.players[0]
+        elif self.current_player == self.players[-1]:
+            self.current_player = self.players[0]
+        else:
+            index=self.players.index(self.current_player)+1
+            self.current_player=self.players[index]
+
+    def play(self, word, casillas_usadas):
+        if self.board.calculate_word_value(word) == 0:
+            return False
+        else:
+            self.current_player.score += self.board.calculate_word_value(word)
+            self.current_player.remove_tiles(word)
+            self.current_player.add_tiles(self.bag_tiles.take(len(word)))
+            return True
+        
+
+
 
     
 
     def end_game(self):
 
-
-        pass
-
+        if  self.bag_tiles == []:
+            return True
+        else:
+            return False
+        
+        
 
 
 class Tile:
@@ -29,7 +74,6 @@ class Tile:
     def __init__(self, letter, value):
 
         self.letter = letter
-
         self.value = value
     
     DATA= [
@@ -77,9 +121,17 @@ class BagTiles:
             self.tiles.remove(tile)
         return taken_tiles
 
-    def put(self, tiles):
+    def put_tiles(self, tiles:list):
         self.tiles.extend(tiles)
         random.shuffle(self.tiles)
+        try:
+            if len(tiles)+len(self.tiles)<=TOTALTILES:
+                    self.tiles.extend(tiles)
+            else:
+                    raise MuchTilesPut
+        except MuchTilesPut:
+                return MuchTilesPut
+
 
 # Definición de las fichas disponibles
 fichas_disponibles = [
