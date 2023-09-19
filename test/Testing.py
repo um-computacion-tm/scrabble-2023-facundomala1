@@ -1,7 +1,9 @@
 
 import unittest
 
-from GameSC.SC import *
+from GameSC.SC import Tile, BagTiles, Player, Board, Cell
+
+
 
 from unittest.mock import patch
 
