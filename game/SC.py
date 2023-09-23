@@ -14,9 +14,10 @@ class ScrabbleGame:
 
         self.players = []
         self.bag_tiles = BagTiles(fichas_disponibles)
+        self.current_player = None
         self.board = Board()
-        for _ in range(players_count):
-            self.players.append(Player())
+        for number in range(players_count):
+            self.players.append(Player(number=number))
 
     def start_game(self):
             
@@ -24,7 +25,9 @@ class ScrabbleGame:
                 player.add_tiles(self.bag_tiles.take(7))
             self.current_player = self.players[0]   
     
-    def draw_tiles(self,cantidad):
+    #revisar
+
+    def draw_game(self,cantidad):
         tile_drawn=[]
         try:
             if cantidad>len(self.tiles):
@@ -45,19 +48,12 @@ class ScrabbleGame:
             index=self.players.index(self.current_player)+1
             self.current_player=self.players[index]
 
-    def play(self, word, casillas_usadas):
-        if self.board.calculate_word_value(word) == 0:
-            return False
-        else:
-            self.current_player.score += self.board.calculate_word_value(word)
-            self.current_player.remove_tiles(word)
-            self.current_player.add_tiles(self.bag_tiles.take(len(word)))
+
+    def validate_word(self, word):
+        if word in self.words:
             return True
-        
-
-
-
-    
+        else:
+            return False
 
     def end_game(self):
 
@@ -121,6 +117,7 @@ class BagTiles:
             self.tiles.remove(tile)
         return taken_tiles
 
+#revisar
     def put_tiles(self, tiles:list):
         self.tiles.extend(tiles)
         random.shuffle(self.tiles)
@@ -190,6 +187,36 @@ class Board:
                 value *= cell.multiplier
                 cell.multiplier = 1
         return value
+    
+    def validate_len_of_word_in_board(self, word, location, orientation):
+        location_x = location[0]
+        location_y = location[1]
+        len_word = len(word)
+        if orientation == 'H':
+            if location_x + len_word > 15:
+                return False
+            else:
+                return True
+        else:
+            if location_y + len_word > 15:
+                return False
+            else:
+                return True
+
+    def put_word(self,word,location, orientation):
+        location_x = location[0]
+        location_y = location[1]
+        if orientation == 'V':
+            for i in range(len(word)):
+                self.grid[location_x+i][location_y].add_letter(word[i])
+        else:
+            for i in range(len(word)):
+                self.grid[location_x][location_y+i].add_letter(word[i])
+
+    def is_empty(self):
+        if self.grid[7][7].letter is None:
+            return True
+
 
     tablero = [
         ["TW", "", "", "DL", "", "", "", "TW", "", "", "", "DL", "", "", "TW"],

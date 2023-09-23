@@ -12,6 +12,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 Scrabbel game with the following features:
 
+
+-Date: 23/09/2023
+
+-New functions:
+
+    +Add three new functions to the "SC.py" module, to the "Board" class
+    +New module to configure Docker
+
+-Changes and fixes: ---
+
 -Date: 12/09/2023
 
 -New functions:

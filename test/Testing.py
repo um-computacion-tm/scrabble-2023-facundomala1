@@ -1,7 +1,7 @@
 
 import unittest
 
-from GameSC.SC import Tile, BagTiles, Player, Board, Cell
+from game.SC import Tile, BagTiles, Player, Board, Cell
 
 
 
