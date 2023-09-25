@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 Scrabbel game with the following features:
 
+-Date: 24/09/2023
+
+-New functions:---
+
+-Changes and fixes:
+
+    +Changes in the game code, in the BagTiles and ScrabbleGame classes
 
 -Date: 23/09/2023
 
@@ -57,7 +64,6 @@ Scrabbel game with the following features:
 -Changes and fixes:---
 
     
-
 -Date: 08/09/2023
 
 -New functions:

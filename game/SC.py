@@ -8,6 +8,9 @@ class MuchTilesPut(Exception):
 class MuchTiles(Exception):
     pass
 
+class TooMuchTiles (Exception):
+    pass
+
 class ScrabbleGame:
 
     def __init__(self, players_count):
@@ -50,7 +53,7 @@ class ScrabbleGame:
 
 
     def validate_word(self, word):
-        if word in self.words:
+        if word == "":
             return True
         else:
             return False
@@ -72,7 +75,7 @@ class Tile:
         self.letter = letter
         self.value = value
     
-    DATA= [
+DATA= [
     {"letter": "A", "value": 1, "quantity": 12},
     {"letter": "B", "value": 3, "quantity": 2},
     {"letter": "C", "value": 3, "quantity": 4},
@@ -102,12 +105,27 @@ class Tile:
     {"letter": "LL", "value": 8, "quantity": 1},
     {"letter": "RR", "value": 8, "quantity": 1},
     {"letter": "_", "value": 0, "quantity": 2} ]
-
+   
 
 class BagTiles:
-    def __init__(self, fichas):
-        self.tiles = list(fichas)
+    def __init__(self):
+        self.tiles=[]
+        for i in DATA:
+            for j in range(i.get('quantity')):
+                self.tiles.append(Tile(i.get("letter"),i.get("value")))
         random.shuffle(self.tiles)
+ 
+    def draw_tiles(self,cantidad):
+        tile_drawn=[]
+        try:
+            if cantidad>len(self.tiles):
+                raise TooMuchTiles
+            else:
+                for i in range(cantidad):
+                    tile_drawn.append(self.tiles.pop())
+                return tile_drawn
+        except TooMuchTiles:
+            return tile_drawn
 
     def take(self, count):
         if count > len(self.tiles):
