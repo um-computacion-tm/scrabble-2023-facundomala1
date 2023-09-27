@@ -2,6 +2,12 @@ import random
 
 TOTALTILES = 100
 
+class TooMuchTilesPut(Exception):
+    pass
+
+class EmptyTiles(Exception):
+    pass
+
 class MuchTilesPut(Exception):
     pass
 
@@ -27,20 +33,6 @@ class ScrabbleGame:
             for player in self.players:
                 player.add_tiles(self.bag_tiles.take(7))
             self.current_player = self.players[0]   
-    
-    #revisar
-
-    def draw_game(self,cantidad):
-        tile_drawn=[]
-        try:
-            if cantidad>len(self.tiles):
-                raise MuchTiles
-            else:
-                for i in range(cantidad):
-                    tile_drawn.append(self.tiles.pop())
-                return tile_drawn
-        except MuchTiles:
-            return tile_drawn
 
     def next_turn(self):
         if self.current_player == None:
@@ -74,6 +66,20 @@ class Tile:
 
         self.letter = letter
         self.value = value
+
+class JokerTile(Tile):
+
+    def __init__(self, letter, value):
+        super().__init__(letter, value)
+
+    def chooseLetter(self,letter_joker):
+        for i in DATA:
+            if i['letter']==letter_joker.upper():
+                self.letter=letter_joker.upper()
+                self.value=i['value']
+                break
+        else:
+            raise EmptyTiles         
     
 DATA= [
     {"letter": "A", "value": 1, "quantity": 12},
@@ -127,26 +133,18 @@ class BagTiles:
         except TooMuchTiles:
             return tile_drawn
 
-    def take(self, count):
-        if count > len(self.tiles):
-            return None                     # No hay suficientes fichas en la bolsa
-        taken_tiles = random.sample(self.tiles, count)
-        for tile in taken_tiles:
-            self.tiles.remove(tile)
-        return taken_tiles
 
-#revisar
-    def put_tiles(self, tiles:list):
-        self.tiles.extend(tiles)
-        random.shuffle(self.tiles)
+    def put_tiles(self,tiles:list):
         try:
             if len(tiles)+len(self.tiles)<=TOTALTILES:
-                    self.tiles.extend(tiles)
+                self.tiles.extend(tiles)
             else:
-                    raise MuchTilesPut
-        except MuchTilesPut:
-                return MuchTilesPut
+                raise TooMuchTilesPut
+        except TooMuchTilesPut:
+            return TooMuchTilesPut
 
+    def tiles_remaining(self):
+        return len(self.tiles)
 
 # Definición de las fichas disponibles
 fichas_disponibles = [
@@ -188,6 +186,7 @@ def calcular_puntuacion(palabra, casillas_usadas):
 
 #tablero
 class Board:
+    #revisar
     def __init__(self,grid=None):
         self.grid = [[ Cell(1, '') for _ in range(15) ]for _ in range(15)]
         self.grid[7][7].multiplier_type = 'word'
@@ -220,7 +219,7 @@ class Board:
                 return False
             else:
                 return True
-
+        
     def put_word(self,word,location, orientation):
         location_x = location[0]
         location_y = location[1]
@@ -258,7 +257,7 @@ class Board:
 
 class Cell:
 
-    def __init__(self, multiplier, multiplier_type):
+    def __init__(self, multiplier, multiplier_type='',letter=None,active=True):
 
         self.multiplier = multiplier
 
@@ -267,9 +266,9 @@ class Cell:
         self.letter = None
 
 
-    def add_letter(self, letter:Tile):
+    def add_letter(self,tile):
 
-        self.letter = letter
+        self.letter = tile
 
 
     def calculate_value(self):
@@ -304,13 +303,10 @@ class Player:
             for tile in tiles:
                 self.tiles.remove(tile)
         
-        def change_tiles(self,player_old=[],player_new=[]):
-            tiles_to_change = []
-            for tile in player_old:
-                self.tiles.remove(tile)
-                tiles_to_change.append(tile)
-            for tile in player_new:
-                self.tiles.append(tile)
-                tiles_to_change.remove(tile)
+        def change_tiles(self,player_old_tiles_index=[],player_new_tiles=[]):
+            tiles_to_change=[]
+            for tile_index in range (len(player_old_tiles_index)):
+                tiles_to_change.append(self.tiles[player_old_tiles_index[tile_index]-1])
+                self.tiles[player_old_tiles_index[tile_index]-1]=player_new_tiles[player_old_tiles_index[tile_index]-1]
             return tiles_to_change
     

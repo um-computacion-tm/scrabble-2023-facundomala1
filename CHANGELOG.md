@@ -12,6 +12,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 Scrabbel game with the following features:
 
+-Date: 26/09/2023
+
+-New functions:
+    +New class called JokerTile
+    +New class TooMuchTilesPut(Exception)
+    +New class EmptyTiles(Exception)
+
+-Changes and fixes:
+
+    +Changes to Cell, Board, BagTiles classes
+
 -Date: 25/09/2023
 
 -New functions:--
