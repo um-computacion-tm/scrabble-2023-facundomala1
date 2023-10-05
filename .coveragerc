@@ -1,10 +1,9 @@
 [run]
 source =
     game
-    tests
+    
 omit =
     env/*
-    */tests/*
     */__init__.py
 [report]
 exclude_lines =

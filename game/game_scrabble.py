@@ -1,5 +1,7 @@
 import random 
 
+
+
 TOTALTILES = 100
 
 class TooMuchTilesPut(Exception):
@@ -67,19 +69,7 @@ class Tile:
         self.letter = letter
         self.value = value
 
-class JokerTile(Tile):
-
-    def __init__(self, letter, value):
-        super().__init__(letter, value)
-
-    def chooseLetter(self,letter_joker):
-        for i in DATA:
-            if i['letter']==letter_joker.upper():
-                self.letter=letter_joker.upper()
-                self.value=i['value']
-                break
-        else:
-            raise EmptyTiles         
+ 
     
 DATA= [
     {"letter": "A", "value": 1, "quantity": 12},
@@ -113,6 +103,21 @@ DATA= [
     {"letter": "_", "value": 0, "quantity": 2} ]
    
 
+class JokerTile(Tile):
+    
+    def __init__(self, letter, value):
+        super().__init__(letter, value)
+
+
+    def chooseLetter(self,letter_joker):
+        for i in DATA:
+            if i['letter']==letter_joker.upper():
+                self.letter=letter_joker.upper()
+                self.value=0
+                break
+        else:
+            raise EmptyTiles 
+        
 class BagTiles:
     def __init__(self):
         self.tiles=[]
@@ -156,103 +161,72 @@ fichas_disponibles = [
     #(otras fichas con sus letras y valores)
 ]
 
-# Crear una instancia de BagTiles con las fichas disponibles
-bag = BagTiles(fichas_disponibles)
 
-# Definir la función de selección de fichas
-def seleccionar_fichas(num_fichas):
-    return bag.take(num_fichas)
-
-# Función para calcular la puntuación de una palabra
-def calcular_puntuacion(palabra, casillas_usadas):
-    puntuacion = 0
-    multiplicador = 1
-
-    for i, letra in enumerate(palabra):
-        if casillas_usadas[i] == "DL":
-            puntuacion += Tile[letra][1] * 2
-        elif casillas_usadas[i] == "TL":
-            puntuacion += Tile[letra][1] * 3
-        elif casillas_usadas[i] == "DW":
-            multiplicador *= 2
-            puntuacion += Tile[letra][1]
-        elif casillas_usadas[i] == "TW":
-            multiplicador *= 3
-            puntuacion += Tile[letra][1]
-        else:
-            puntuacion += Tile[letra][1]
-
-    return puntuacion * multiplicador
 
 #tablero
 class Board:
-    #revisar
-    def __init__(self,grid=None):
-        self.grid = [[ Cell(1, '') for _ in range(15) ]for _ in range(15)]
-        self.grid[7][7].multiplier_type = 'word'
-        self.grid[7][7].multiplier = 3
-        self.grid[0][0].multiplier_type = 'word'
-        self.grid[0][0].multiplier = 3
-        self.grid[0][7].multiplier_type = 'word'
-
-    def calculate_word_value(self, word):
-        value = 0
-        for cell in word:
-            value += cell.calculate_value()
-        for cell in word:
-            if cell.multiplier_type == 'word':
-                value *= cell.multiplier
-                cell.multiplier = 1
-        return value
     
-    def validate_len_of_word_in_board(self, word, location, orientation):
-        location_x = location[0]
-        location_y = location[1]
-        len_word = len(word)
-        if orientation == 'H':
-            if location_x + len_word > 15:
-                return False
-            else:
-                return True
-        else:
-            if location_y + len_word > 15:
-                return False
-            else:
-                return True
-        
-    def put_word(self,word,location, orientation):
-        location_x = location[0]
-        location_y = location[1]
-        if orientation == 'V':
-            for i in range(len(word)):
-                self.grid[location_x+i][location_y].add_letter(word[i])
-        else:
-            for i in range(len(word)):
-                self.grid[location_x][location_y+i].add_letter(word[i])
-
-    def is_empty(self):
-        if self.grid[7][7].letter is None:
+    def __init__(self):
+        self.grid = [
+            [ Cell(None,None,1, '') for _ in range(15) ]
+            for _ in range(15)
+        ]
+    def validate_word_inside_board(self, word, location, orientation):
+        self.word = word
+        self.orientation = orientation
+        self.position_row = location[0]
+        self.position_col = location[1] 
+        if orientation == 'H' and len(self.word)<=15-self.position_col:
             return True
-
-
-    tablero = [
-        ["TW", "", "", "DL", "", "", "", "TW", "", "", "", "DL", "", "", "TW"],
-        ["", "DW", "", "", "", "TL", "", "", "", "TL", "", "", "", "DW", ""],
-        ["", "", "DW", "", "", "", "DL", "", "DL", "", "", "", "DW", "", ""],
-        ["DL", "", "", "DW", "", "", "", "DL", "", "", "", "DW", "", "", "DL"],
-        ["", "", "", "", "DW", "", "", "", "", "", "DW", "", "", "", ""],
-        ["", "TL", "", "", "", "TL", "", "", "", "TL", "", "", "", "TL", ""],
-        ["", "", "DL", "", "", "", "DL", "", "DL", "", "", "", "DL", "", ""],
-        ["TW", "", "", "DL", "", "", "", "S", "", "", "", "DL", "", "", "TW"],
-        ["", "", "DL", "", "", "", "DL", "", "DL", "", "", "", "DL", "", ""],
-        ["", "TL", "", "", "", "TL", "", "", "", "TL", "", "", "", "TL", ""],
-        ["", "", "", "", "DW", "", "", "", "", "", "DW", "", "", "", ""],
-        ["DL", "", "", "DW", "", "", "", "DL", "", "", "", "DW", "", "", "DL"],
-        ["", "", "DW", "", "", "", "DL", "", "DL", "", "", "", "DW", "", ""],
-        ["", "DW", "", "", "", "TL", "", "", "", "TL", "", "", "", "DW", ""],
-        ["TW", "", "", "DL", "", "", "", "TW", "", "", "", "DL", "", "", "TW"]
-    ]
-
+        elif orientation == 'V' and len(self.word)<=15-self.position_row:
+            return True
+        else:
+            return False
+        
+    def empty(self):
+        if self.grid[7][7].letter == None:
+            self.is_empty = True
+        else:
+            self.is_empty = False
+   
+    def validate_word_place_board(self, word, location, orientation):
+        
+        valid = self.validate_word_inside_board(word, location, orientation)
+        self.empty()
+        
+        if self.is_empty == False:
+            if valid == True:
+                if orientation == "H":
+                    for i in self.word:
+                        index = self.position_col
+                        if self.grid[self.position_row][index].letter is not None:
+                            if i != self.grid[self.position_row][index].letter.letter:
+                                return False
+                        self.position_col += 1
+                    return True
+                else:
+                    for i in self.word:
+                        index = self.position_row
+                        if self.grid[index][self.position_col].letter is not None:
+                            if i != self.grid[index][self.position_col].letter.letter:    
+                                return False
+                        self.position_row += 1
+                    return True
+        else:
+            if valid == True:
+                for i in self.word:
+                    if orientation == "H":
+                        index = self.position_col
+                        if self.position_row == 7 and index == 7:
+                            return True
+                        self.position_col += 1 
+                    else:
+                        index = self.position_row
+                        if self.position_col == 7 and index == 7:
+                            return True
+                        self.position_row += 1 
+                return False
+        
     
 
 class Cell:
