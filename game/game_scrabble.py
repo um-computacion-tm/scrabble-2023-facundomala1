@@ -21,15 +21,14 @@ class TooMuchTiles (Exception):
 
 class ScrabbleGame:
 
-    def __init__(self, players_count):
-
-        self.players = []
-        self.bag_tiles = BagTiles(fichas_disponibles)
-        self.current_player = None
+    def __init__(self, players_count: int):
         self.board = Board()
-        for number in range(players_count):
-            self.players.append(Player(number=number))
-
+        self.bag_tiles = BagTiles()
+        self.players:list[Player] = []
+        for _ in range(players_count):
+            self.players.append(Player())
+        
+        self.current_player = None
     def start_game(self):
             
             for player in self.players:
@@ -151,21 +150,11 @@ class BagTiles:
     def tiles_remaining(self):
         return len(self.tiles)
 
-# Definición de las fichas disponibles
-fichas_disponibles = [
-    Tile('A', 1),
-    Tile('A', 1),
-    Tile('A', 1),
-    Tile('A', 1),
-    Tile('A', 1),
-    #(otras fichas con sus letras y valores)
-]
 
 
 
 #tablero
 class Board:
-    
     def __init__(self):
         self.grid = [
             [ Cell(None,None,1, '') for _ in range(15) ]
@@ -190,10 +179,8 @@ class Board:
             self.is_empty = False
    
     def validate_word_place_board(self, word, location, orientation):
-        
         valid = self.validate_word_inside_board(word, location, orientation)
         self.empty()
-        
         if self.is_empty == False:
             if valid == True:
                 if orientation == "H":
@@ -226,39 +213,39 @@ class Board:
                             return True
                         self.position_row += 1 
                 return False
-        
-    
 
 class Cell:
 
-    def __init__(self, multiplier, multiplier_type='',letter=None,active=True):
-
+    def __init__(self,letter,state,multiplier, multiplier_type):
         self.multiplier = multiplier
-
         self.multiplier_type = multiplier_type
-
-        self.letter = None
-
-
-    def add_letter(self,tile):
-
-        self.letter = tile
-
+        self.letter=letter
+        self.state=state
+        
+        
+    def add_letter(self, letter:Tile):
+        self.letter = letter
 
     def calculate_value(self):
-
         if self.letter is None:
-
             return 0
-
-        if self.multiplier_type == 'letter':
-
+        if self.multiplier_type == 'letter'and self.state==True:
             return self.letter.value * self.multiplier
-
         else:
-
             return self.letter.value
-
+        
+    class calculate_word:
+        def __init__(self,word) : 
+            self.word=word       
+        def calculate_word(self):
+            value=0
+            for letras in self.word:
+                value_letra=Cell.calculate_value(letras)
+                value+=value_letra
+            for letras in self.word:
+                if letras.multiplier_type == 'word' and letras.state == True:
+                    value = value * letras.multiplier
+            return value    
 
 class Player:
     
