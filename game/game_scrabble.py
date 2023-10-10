@@ -1,7 +1,6 @@
 import random 
 
 
-
 TOTALTILES = 100
 
 class TooMuchTilesPut(Exception):
@@ -18,6 +17,7 @@ class MuchTiles(Exception):
 
 class TooMuchTiles (Exception):
     pass
+
 
 class ScrabbleGame:
 
@@ -44,19 +44,34 @@ class ScrabbleGame:
             index=self.players.index(self.current_player)+1
             self.current_player=self.players[index]
 
+    def validate_word(self, word, location, orientation):
+        valid_place_word = self.board.validate_word_place_board(word, location, orientation)
+        if  valid_place_word:
+            valid_dict = self.dictionary.has_word(word)
+            if valid_dict:
+                valid_has_letters = self.current_player.has_letters(self.board.missing_letters)
+                if valid_has_letters:
+                    return True       
+        return False
 
-    def validate_word(self, word):
-        if word == "":
-            return True
-        else:
-            return False
+    def show_board(self):
+        return self.board.show_board()
+
+    def token_distribution(self):
+        for player in self.players:
+            player.add_tiles(self.bag_tiles.draw_tiles(7))
+
+
+    
+    def show_player_tiles(self):
+        return self.current_player.show_tiles()
 
     def end_game(self):
-
         if  self.bag_tiles == []:
             return True
         else:
             return False
+        
         
         
 
@@ -213,6 +228,27 @@ class Board:
                             return True
                         self.position_row += 1 
                 return False
+    
+    def show_board(self):
+        board_str = '\n'
+        columnas = ['   ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
+        board_str += "  ".join(columnas) + '\n'
+        board_str += '-------------------------------------------------\n'
+        filas = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15']
+    
+        for i in range(15):
+            board_str += filas[i] + '|  '
+            for j in range(15):
+                if self.grid[i][j].letter is None:
+                    board_str += '-  '
+                else:
+                    board_str += self.grid[i][j].letter.letter.upper() + '  '
+            board_str += '\n'
+        board_str += '\n'
+        return board_str
+    
+
+    
 
 class Cell:
 
@@ -234,10 +270,10 @@ class Cell:
         else:
             return self.letter.value
         
-    class calculate_word:
-        def __init__(self,word) : 
+class calculate_word:
+    def __init__(self,word) : 
             self.word=word       
-        def calculate_word(self):
+    def calculate_word(self):
             value=0
             for letras in self.word:
                 value_letra=Cell.calculate_value(letras)
@@ -271,3 +307,5 @@ class Player:
                 self.tiles[player_old_tiles_index[tile_index]-1]=player_new_tiles[player_old_tiles_index[tile_index]-1]
             return tiles_to_change
     
+        def show_tiles(self):
+            return self.tiles

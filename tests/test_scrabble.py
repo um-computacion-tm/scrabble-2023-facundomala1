@@ -11,6 +11,7 @@ class TestInitialization(unittest.TestCase):
         self.assertIsNotNone(scrabble_game.board)
         self.assertEqual(len(scrabble_game.players), 3)
         self.assertIsNotNone(scrabble_game.bag_tiles)
+        
 
     def test_next_turn_when_game_is_starting(self):
         scrabble_game = ScrabbleGame(players_count=3)
@@ -29,10 +30,17 @@ class TestInitialization(unittest.TestCase):
         scrabble_game.next_turn()
         self.assertEqual (scrabble_game.current_player, scrabble_game.players[0])
     
-    def test_validate_word(self):
+
+    def test_show_board(self):
+        
         scrabble_game = ScrabbleGame(players_count=3)
-        self.assertTrue(scrabble_game.validate_word('hola'))
-        self.assertFalse(scrabble_game.validate_word(''))
+        self.assertEqual(scrabble_game.show_board(), scrabble_game.board.show_board())
+
+    def test_show_player_tiles(self):
+        scrabble_game = ScrabbleGame(players_count=3)
+        scrabble_game.next_turn()
+        scrabble_game.token_distribution()
+        self.assertEqual(scrabble_game.show_player_tiles(), scrabble_game.current_player.show_tiles())
 
 
 class TestEnd(unittest.TestCase):
@@ -261,7 +269,6 @@ class TestBoard(unittest.TestCase):
 class TestCell(unittest.TestCase):
     def test_init(self):
         cell = Cell(None,True,multiplier=2, multiplier_type='letter')
-
         self.assertEqual(
             cell.multiplier,
             2,
@@ -283,12 +290,11 @@ class TestCell(unittest.TestCase):
         cell.add_letter(letter=letter)
 
         self.assertEqual(cell.letter, letter)
-        
+
     def test_cell_value(self):
         cell = Cell(None,True,multiplier=2, multiplier_type='letter')
         letter = Tile(letter='p', value=3)
         cell.add_letter(letter=letter)
-
         self.assertEqual(
             cell.calculate_value(),
             6,
@@ -298,7 +304,6 @@ class TestCell(unittest.TestCase):
         cell = Cell(None,True,multiplier=2, multiplier_type='word')
         letter = Tile(letter='p', value=3)
         cell.add_letter(letter=letter)
-
         self.assertEqual(
             cell.calculate_value(),
             3,
