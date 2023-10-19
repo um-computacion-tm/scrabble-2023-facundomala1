@@ -30,6 +30,11 @@ class TestInitialization(unittest.TestCase):
         scrabble_game.next_turn()
         self.assertEqual (scrabble_game.current_player, scrabble_game.players[0])
     
+    
+    def test_validate_word(self):
+        scrabble_game = ScrabbleGame(players_count=3)
+        self.assertTrue(scrabble_game.validate_word('hola'))
+        self.assertFalse(scrabble_game.validate_word('hola2'))
 
     def test_show_board(self):
         
@@ -39,7 +44,7 @@ class TestInitialization(unittest.TestCase):
     def test_show_player_tiles(self):
         scrabble_game = ScrabbleGame(players_count=3)
         scrabble_game.next_turn()
-        scrabble_game.token_distribution()
+        scrabble_game.distribute_tiles()
         self.assertEqual(scrabble_game.show_player_tiles(), scrabble_game.current_player.show_tiles())
 
 
@@ -263,6 +268,68 @@ class TestBoard(unittest.TestCase):
         orientation = "V"
         word_is_valid = board.validate_word_place_board(word, location, orientation)
         assert word_is_valid == False
+    
+    def test_place_word_not_empty_board_horizontal_fine(self):
+        board = Board()
+        board.grid[7][7].add_letter(Tile('C', 1))
+        board.grid[8][7].add_letter(Tile('A', 1)) 
+        board.grid[9][7].add_letter(Tile('S', 1)) 
+        board.grid[10][7].add_letter(Tile('A', 1)) 
+        word = "FACULTAD"
+        location = (8, 6)
+        orientation = "H"
+        word_is_valid = board.validate_word_place_board(word, location, orientation)
+        assert word_is_valid == True
+
+    def test_place_word_not_empty_board_horizontal_not_fine(self):
+        board = Board()
+        board.grid[7][7].add_letter(Tile('C', 1))
+        board.grid[8][7].add_letter(Tile('A', 1)) 
+        board.grid[9][7].add_letter(Tile('S', 1)) 
+        board.grid[10][7].add_letter(Tile('A', 1)) 
+        word = "MISA"
+        location = (8, 6)
+        orientation = "H"
+        word_is_valid = board.validate_word_place_board(word, location, orientation)
+        assert word_is_valid == False
+    
+    def test_place_word_not_empty_board_vertical_fine(self):
+        board = Board()
+        board.grid[7][7].add_letter(Tile('C', 1))
+        board.grid[7][8].add_letter(Tile('A', 1)) 
+        board.grid[7][9].add_letter(Tile('S', 1)) 
+        board.grid[7][10].add_letter(Tile('A', 1)) 
+        word = "FACULTAD"
+        location = (6, 8)
+        orientation = "V"
+        word_is_valid = board.validate_word_place_board(word, location, orientation)
+        assert word_is_valid == True
+    
+    def test_place_word_not_empty_board_vertical_not_fine(self):
+        board = Board()
+        board.grid[7][7].add_letter(Tile('C', 1))
+        board.grid[7][8].add_letter(Tile('A', 1)) 
+        board.grid[7][9].add_letter(Tile('S', 1)) 
+        board.grid[7][10].add_letter(Tile('A', 1)) 
+        word = "MISA"
+        location = (6, 8)
+        orientation = "V"
+        word_is_valid = board.validate_word_place_board(word, location, orientation)
+        assert word_is_valid == False
+    
+    def test_place_word_not_empty_board_horizontal_fine(self):
+        board = Board()
+        board.grid[7][7].add_letter(Tile('C', 1))
+        board.grid[8][7].add_letter(Tile('A', 1)) 
+        board.grid[9][7].add_letter(Tile('S', 1)) 
+        board.grid[10][7].add_letter(Tile('A', 1)) 
+        word = "FACULTAD"
+        location = (8, 6)
+        orientation = "H"
+        word_is_valid = board.validate_word_place_board(word, location, orientation)
+        assert word_is_valid == True
+
+    
 
 
 

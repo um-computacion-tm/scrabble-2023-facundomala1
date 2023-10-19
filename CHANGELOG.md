@@ -11,7 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 Scrabbel game with the following features:
--Date: 10/11/2023
+-Date: 19/10/2023
+-New functions:---
+
+-Changes and fixes:
+
+    +The Pyrae function was added to validate the words
+    
+-Date: 10/10/2023
 
 -New functions:---
 

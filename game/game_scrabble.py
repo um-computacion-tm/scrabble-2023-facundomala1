@@ -1,5 +1,7 @@
 import random 
 
+from pyrae import dle
+
 
 TOTALTILES = 100
 
@@ -27,13 +29,8 @@ class ScrabbleGame:
         self.players:list[Player] = []
         for _ in range(players_count):
             self.players.append(Player())
-        
         self.current_player = None
-    def start_game(self):
-            
-            for player in self.players:
-                player.add_tiles(self.bag_tiles.take(7))
-            self.current_player = self.players[0]   
+        self.turn = 0
 
     def next_turn(self):
         if self.current_player == None:
@@ -43,26 +40,17 @@ class ScrabbleGame:
         else:
             index=self.players.index(self.current_player)+1
             self.current_player=self.players[index]
+            
+    def distribute_tiles(self):
+        for player in self.players:
+            player.add_tiles(self.bag_tiles.draw_tiles(7))
 
-    def validate_word(self, word, location, orientation):
-        valid_place_word = self.board.validate_word_place_board(word, location, orientation)
-        if  valid_place_word:
-            valid_dict = self.dictionary.has_word(word)
-            if valid_dict:
-                valid_has_letters = self.current_player.has_letters(self.board.missing_letters)
-                if valid_has_letters:
-                    return True       
-        return False
+    def validate_word(self, word):
+        return self.board.validate_word(word)
 
     def show_board(self):
         return self.board.show_board()
 
-    def token_distribution(self):
-        for player in self.players:
-            player.add_tiles(self.bag_tiles.draw_tiles(7))
-
-
-    
     def show_player_tiles(self):
         return self.current_player.show_tiles()
 
@@ -175,6 +163,18 @@ class Board:
             [ Cell(None,None,1, '') for _ in range(15) ]
             for _ in range(15)
         ]
+
+    def calculate_word_value(self, word):
+        value = 0
+        for cell in word:
+            value += cell.calculate_value()
+        for cell in word:
+            if cell.multiplier_type == 'word':
+                value *= cell.multiplier
+                cell.multiplier = 1
+        return value
+
+    
     def validate_word_inside_board(self, word, location, orientation):
         self.word = word
         self.orientation = orientation
@@ -229,6 +229,14 @@ class Board:
                         self.position_row += 1 
                 return False
     
+    def validate_word(self, word):
+
+        flag=dle.search_by_word(word)
+        if word.lower() not in flag.title:
+            return False
+        else:
+            return True
+        
     def show_board(self):
         board_str = '\n'
         columnas = ['   ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
@@ -246,6 +254,7 @@ class Board:
             board_str += '\n'
         board_str += '\n'
         return board_str
+    
     
 
     
