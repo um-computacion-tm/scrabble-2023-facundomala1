@@ -238,22 +238,20 @@ class Board:
             return True
         
     def show_board(self):
-        board_str = '\n'
-        columnas = ['   ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
-        board_str += "  ".join(columnas) + '\n'
-        board_str += '-------------------------------------------------\n'
-        filas = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15']
-    
+        print('')
+        columnas = ['   ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O']
+        print("  ".join(columnas))
+        print('-------------------------------------------------')
+        filas  = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15']
         for i in range(15):
-            board_str += filas[i] + '|  '
+            print(filas[i], end='|  ')
             for j in range(15):
                 if self.grid[i][j].letter is None:
-                    board_str += '-  '
+                    print('-', end='  ')
                 else:
-                    board_str += self.grid[i][j].letter.letter.upper() + '  '
-            board_str += '\n'
-        board_str += '\n'
-        return board_str
+                    print(self.grid[i][j].letter.letter.upper(), end='  ')
+            print('')
+        print('')   
     
     
 
