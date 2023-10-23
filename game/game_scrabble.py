@@ -277,18 +277,7 @@ class Cell:
         else:
             return self.letter.value
         
-class calculate_word:
-    def __init__(self,word) : 
-            self.word=word       
-    def calculate_word(self):
-            value=0
-            for letras in self.word:
-                value_letra=Cell.calculate_value(letras)
-                value+=value_letra
-            for letras in self.word:
-                if letras.multiplier_type == 'word' and letras.state == True:
-                    value = value * letras.multiplier
-            return value    
+    
 
 class Player:
     
@@ -303,10 +292,6 @@ class Player:
         def add_tiles(self,tiles):
             self.tiles.extend(tiles)
 
-        def remove_tiles(self,tiles):
-            for tile in tiles:
-                self.tiles.remove(tile)
-        
         def change_tiles(self,player_old_tiles_index=[],player_new_tiles=[]):
             tiles_to_change=[]
             for tile_index in range (len(player_old_tiles_index)):
