@@ -164,15 +164,15 @@ class Board:
             for _ in range(15)
         ]
 
-    def calculate_word_value(self, word):
-        value = 0
-        for cell in word:
-            value += cell.calculate_value()
-        for cell in word:
-            if cell.multiplier_type == 'word':
-                value *= cell.multiplier
-                cell.multiplier = 1
-        return value
+    #def calculate_word_value(self, word):
+        #value = 0
+        #for cell in word:
+         #   value += cell.calculate_value()
+        #for cell in word:
+         #   if cell.multiplier_type == 'word':
+          #      value *= cell.multiplier
+           #     cell.multiplier = 1
+        #return value
 
     
     def validate_word_inside_board(self, word, location, orientation):
