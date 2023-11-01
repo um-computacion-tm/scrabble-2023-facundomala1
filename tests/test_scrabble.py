@@ -169,6 +169,7 @@ class TestBoard(unittest.TestCase):
         word_is_valid = board.validate_word_inside_board(word, location, orientation)
 
         assert word_is_valid == False
+        
     def test_word_inside_board_vertical(self):
       board = Board()
       word = "FACULTAD"
@@ -376,9 +377,7 @@ class TestCell(unittest.TestCase):
             3,
         )
 
-
-
-if __name__ == '__main__':
+    
+if __name__=='__main__':
 
     unittest.main()
-
