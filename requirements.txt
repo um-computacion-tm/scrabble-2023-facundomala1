@@ -1,2 +1,4 @@
     coverage
     pyrae
+    pyrae.tests
+    ipdb
